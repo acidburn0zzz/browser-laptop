@@ -399,12 +399,12 @@ const appActions = {
    * Saves login credentials
    * @param {Object} passwordDetail - login details
    */
-  savePassword: function (passwordDetail) {
-    AppDispatcher.dispatch({
-      actionType: appConstants.APP_ADD_PASSWORD,
-      passwordDetail
-    })
-  },
+  // savePassword: function (passwordDetail) {
+  //   AppDispatcher.dispatch({
+  //     actionType: appConstants.APP_ADD_PASSWORD,
+  //     passwordDetail
+  //   })
+  // },
 
   /**
    * Deletes login credentials
@@ -1197,6 +1197,24 @@ const appActions = {
     AppDispatcher.dispatch({
       actionType: appConstants.APP_DRAGGED_OVER,
       draggedOverData
+    })
+  },
+
+  savePassword: function (username, origin, tabId) {
+    AppDispatcher.dispatch({
+      actionType: appConstants.APP_SAVE_PASSWORD,
+      username,
+      origin,
+      tabId
+    })
+  },
+
+  updatePassword: function (username, origin, tabId) {
+    AppDispatcher.dispatch({
+      actionType: appConstants.APP_UPDATE_PASSWORD,
+      username,
+      origin,
+      tabId
     })
   }
 }

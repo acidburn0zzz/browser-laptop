@@ -12,6 +12,7 @@ const CryptoUtil = require('../../../js/lib/cryptoUtil')
 const locale = require('../../locale')
 const messages = require('../../../js/constants/messages')
 const siteSettings = require('../../../js/state/siteSettings')
+const tabs = require('../tabs')
 const {makeImmutable} = require('../../common/state/immutableUtil')
 const {BrowserWindow, ipcMain} = require('electron')
 
@@ -253,11 +254,107 @@ const init = () => {
   })
 }
 
+const savePassword = (username, origin, tabId) => {
+  if (!origin) {
+    return
+  }
+
+  var message = username
+    ? locale.translation('notificationPasswordWithUserName').replace(/{{\s*username\s*}}/, username).replace(/{{\s*origin\s*}}/, origin)
+    : locale.translation('notificationPassword').replace(/{{\s*origin\s*}}/, origin)
+
+  if (!(message in passwordCallbacks)) {
+    // Notification not shown already
+    appActions.showNotification({
+      buttons: [
+        {text: locale.translation('yes')},
+        {text: locale.translation('no')},
+        {text: locale.translation('neverForThisSite')}
+      ],
+      options: {
+        persist: false,
+        advancedText: locale.translation('notificationPasswordSettings'),
+        advancedLink: 'about:passwords'
+      },
+      message
+    })
+  }
+
+  const webContents = tabs.getWebContents(tabId)
+
+  passwordCallbacks[message] = (buttonIndex) => {
+    delete passwordCallbacks[message]
+    appActions.hideNotification(message)
+
+    if (buttonIndex === 1) {
+      // don't save
+      return
+    }
+    if (buttonIndex === 2) {
+      // never save
+      webContents.neverSavePassword()
+      return
+    }
+
+    // save password
+    webContents.savePassword()
+  }
+}
+
+const updatePassword = (username, origin, tabId) => {
+  if (!origin) {
+    return
+  }
+
+  var message = username
+    ? locale.translation('notificationUpdatePasswordWithUserName').replace(/{{\s*username\s*}}/, username).replace(/{{\s*origin\s*}}/, origin)
+    : locale.translation('notificationUpdatePassword').replace(/{{\s*origin\s*}}/, origin)
+
+  if (!(message in passwordCallbacks)) {
+    // Notification not shown already
+    appActions.showNotification({
+      buttons: [
+        {text: locale.translation('yes')},
+        {text: locale.translation('no')}
+      ],
+      options: {
+        persist: false,
+        advancedText: locale.translation('notificationPasswordSettings'),
+        advancedLink: 'about:passwords'
+      },
+      message
+    })
+  }
+
+  const webContents = tabs.getWebContents(tabId)
+
+  passwordCallbacks[message] = (buttonIndex) => {
+    delete passwordCallbacks[message]
+    appActions.hideNotification(message)
+
+    if (buttonIndex === 0) {
+      webContents.updatePassword()
+      return
+    }
+    if (buttonIndex === 1) {
+      // never save
+      webContents.noUpdatePassword()
+      return
+    }
+  }
+}
+
 const passwordManagerReducer = (state, action) => {
   action = makeImmutable(action)
   switch (action.get('actionType')) {
     case appConstants.APP_SET_STATE:
       init()
+      break
+    case appConstants.APP_SAVE_PASSWORD:
+      savePassword(action.get('username'), action.get('origin'), action.get('tabId'))
+      break
+    case appConstants.APP_UPDATE_PASSWORD:
+      updatePassword(action.get('username'), action.get('origin'), action.get('tabId'))
       break
   }
   return state

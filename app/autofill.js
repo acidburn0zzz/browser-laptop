@@ -10,6 +10,12 @@ module.exports.init = () => {
   process.on('personal-data-changed', (profileGuids, creditCardGuids) => {
     appActions.autofillDataChanged(profileGuids, creditCardGuids)
   })
+  process.on('password-list-changed', (passwords) => {
+    console.log(passwords)
+  })
+  process.on('password-blacked-list-changed', (passwords) => {
+    console.log(passwords)
+  })
 }
 
 module.exports.addAutofillAddress = (detail, guid) => {

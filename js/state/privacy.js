@@ -10,7 +10,11 @@ const {registerUserPrefs} = require('./userPrefs')
 const getSetting = require('../settings').getSetting
 
 const getPrivacySettings = () => {
-  return { 'autofill.enabled': getSetting(settings.AUTOFILL_ENABLED) }
+  return { 'autofill.enabled': getSetting(settings.AUTOFILL_ENABLED),
+    'profile.password_manager_enabled': true,
+    'credentials_enable_service': true,
+    'credentials_enable_autosignin': false
+  }
 }
 
 let updateTrigger

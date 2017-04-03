@@ -316,16 +316,6 @@ Sets the update status
 
 
 
-### savePassword(passwordDetail) 
-
-Saves login credentials
-
-**Parameters**
-
-**passwordDetail**: `Object`, login details
-
-
-
 ### deletePassword(passwordDetail) 
 
 Deletes login credentials

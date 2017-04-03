@@ -460,11 +460,15 @@ function autofillTemplateInit (suggestions, frame) {
       value = suggestions[i].value
     } else if (frontendId === -1) { // POPUP_ITEM_ID_WARNING_MESSAGE
       value = 'Disabled due to unsecure connection.'
+    } else if (frontendId === -2) { // POPUP_ITEM_ID_PASSWORD_ENTRY
+      value = 'Use password for: ' + suggestions[i].value
     } else if (frontendId === -4) { // POPUP_ITEM_ID_CLEAR_FORM
       value = 'Clear Form'
     } else if (frontendId === -5) { // POPUP_ITEM_ID_AUTOFILL_OPTIONS
       value = 'Autofill Settings'
     } else if (frontendId === -6) { // POPUP_ITEM_ID_DATALIST_ENTRY
+      value = suggestions[i].value
+    } else if (frontendId === -11) { // POPUP_ITEM_ID_USERNAME_ENTRY
       value = suggestions[i].value
     }
     if (frontendId === -3) { // POPUP_ITEM_ID_SEPARATOR
