@@ -339,7 +339,6 @@ const updatePassword = (username, origin, tabId) => {
     if (buttonIndex === 1) {
       // never save
       webContents.noUpdatePassword()
-      return
     }
   }
 }
