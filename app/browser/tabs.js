@@ -183,14 +183,18 @@ const updateAboutDetails = (tab, tabValue) => {
   } else if (location === 'about:passwords' && passwords) {
     const defaultSession = session.defaultSession
     defaultSession.autofill.getAutofillableLogins((result) => {
-      console.log(result)
+      tab.send(messages.PASSWORD_DETAILS_UPDATED, result)
     })
     defaultSession.autofill.getBlackedlistLogins((result) => {
-      console.log(result)
+      let siteMap = {}
+      result.forEach((entry) => {
+        siteMap[entry.origin] = entry.username
+      })
+      tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED, siteMap)
     })
-    tab.send(messages.PASSWORD_DETAILS_UPDATED, passwords.toJS())
-    tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED,
-        allSiteSettings.filter((setting) => setting.get('savePasswords') === false).toJS())
+    // tab.send(messages.PASSWORD_DETAILS_UPDATED, passwords.toJS())
+    // tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED,
+    //     allSiteSettings.filter((setting) => setting.get('savePasswords') === false).toJS())
   } else if (location === 'about:flash') {
     tab.send(messages.BRAVERY_DEFAULTS_UPDATED, braveryDefaults.toJS())
   } else if (location === 'about:newtab') {
