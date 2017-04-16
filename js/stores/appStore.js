@@ -418,9 +418,10 @@ const handleAppAction = (action) => {
       appState = appState.set('passwords', passwords.push(Immutable.fromJS(action.passwordDetail)))
       break
     case appConstants.APP_REMOVE_PASSWORD:
-      appState = appState.set('passwords', appState.get('passwords').filterNot((pw) => {
-        return Immutable.is(pw, Immutable.fromJS(action.passwordDetail))
-      }))
+      // appState = appState.set('passwords', appState.get('passwords').filterNot((pw) => {
+      //   return Immutable.is(pw, Immutable.fromJS(action.passwordDetail))
+      // }))
+      autofill.removeLogin(action.passwordDetail.toJS())
       break
     case appConstants.APP_CLEAR_PASSWORDS:
       appState = appState.set('passwords', new Immutable.List())

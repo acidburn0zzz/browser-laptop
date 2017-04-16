@@ -186,11 +186,7 @@ const updateAboutDetails = (tab, tabValue) => {
       tab.send(messages.PASSWORD_DETAILS_UPDATED, result)
     })
     defaultSession.autofill.getBlackedlistLogins((result) => {
-      let siteMap = {}
-      result.forEach((entry) => {
-        siteMap[entry.origin] = entry.username
-      })
-      tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED, siteMap)
+      tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED, result)
     })
     // tab.send(messages.PASSWORD_DETAILS_UPDATED, passwords.toJS())
     // tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED,

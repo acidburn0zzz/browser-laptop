@@ -63,7 +63,7 @@ class SiteItem extends React.Component {
   }
 
   onDelete () {
-    aboutActions.deletePasswordSite(this.props.site)
+    aboutActions.deletePassword(this.props.site.toJS())
   }
 
   render () {
@@ -77,7 +77,7 @@ class SiteItem extends React.Component {
             style={{backgroundColor: 'inherit'}} />
         </span>
       </ActionsTd>
-      <PasswordsTd data-test-id='passwordOrigin'>{this.props.site}</PasswordsTd>
+      <PasswordsTd data-test-id='passwordOrigin'>{this.props.site.get('signon_realm')}</PasswordsTd>
     </PasswordsTr>
   }
 }
@@ -110,8 +110,7 @@ class PasswordItem extends React.Component {
   }
 
   onCopy () {
-    const password = this.props.password
-    aboutActions.setClipboard(password.get('password'))
+    aboutActions.setClipboard(this.props.password.get('password'))
     // if (this.state.decrypted !== null) {
     //   aboutActions.setClipboard(this.state.decrypted)
     // } else {
@@ -145,7 +144,7 @@ class PasswordItem extends React.Component {
             style={{backgroundColor: 'inherit'}} />
         </span>
       </ActionsTd>
-      <PasswordsTd data-test-id='passwordOrigin'>{password.get('origin')}</PasswordsTd>
+      <PasswordsTd data-test-id='passwordOrigin'>{password.get('signon_realm')}</PasswordsTd>
       <PasswordsTd data-test-id='passwordUsername'>{password.get('username')}</PasswordsTd>
       <PasswordsTd data-test-id='passwordPlaintext'>
         {'*'.repeat(password.get('password').length)}
@@ -173,7 +172,7 @@ class AboutPasswords extends React.Component {
     super()
     this.state = {
       passwordDetails: new Immutable.List(),
-      disabledSiteDetails: new Immutable.Map()
+      disabledSiteDetails: new Immutable.List()
     }
     this.onClear = this.onClear.bind(this)
     ipc.on(messages.PASSWORD_DETAILS_UPDATED, (e, detail) => {
@@ -228,7 +227,7 @@ class AboutPasswords extends React.Component {
           <tbody>
             {
               this.state.passwordDetails.sort((a, b) => {
-                return a.get('origin') > b.get('origin') ? 1 : -1
+                return a.get('signon_realm') > b.get('signon_realm') ? 1 : -1
               }).map((item) =>
                 <PasswordItem password={item} id={counter++} />)
             }
@@ -251,8 +250,8 @@ class AboutPasswords extends React.Component {
         <table className={css(styles.passwordsList)}>
           <tbody>
             {
-              this.state.disabledSiteDetails.map((item, site) =>
-                <SiteItem site={site} />)
+              this.state.disabledSiteDetails.map((item) =>
+                <SiteItem site={item} />)
             }
           </tbody>
         </table>
