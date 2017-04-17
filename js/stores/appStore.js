@@ -424,7 +424,8 @@ const handleAppAction = (action) => {
       autofill.removeLogin(action.passwordDetail.toJS())
       break
     case appConstants.APP_CLEAR_PASSWORDS:
-      appState = appState.set('passwords', new Immutable.List())
+      // appState = appState.set('passwords', new Immutable.List())
+      autofill.clearLogins()
       break
     case appConstants.APP_CHANGE_NEW_TAB_DETAIL:
       appState = aboutNewTabState.mergeDetails(appState, action)
