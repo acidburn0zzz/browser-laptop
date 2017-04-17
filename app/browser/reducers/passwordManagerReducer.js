@@ -14,7 +14,9 @@ const messages = require('../../../js/constants/messages')
 const siteSettings = require('../../../js/state/siteSettings')
 const tabs = require('../tabs')
 const {makeImmutable} = require('../../common/state/immutableUtil')
+const Immutable = require('immutable')
 const {BrowserWindow, ipcMain} = require('electron')
+const autofill = require('../../autofill')
 
 const unsafeTestMasterKey = 'c66af15fc6555ebecf7cee3a5b82c108fd3cb4b587ab0b299d28e39c79ecc708'
 
@@ -343,11 +345,50 @@ const updatePassword = (username, origin, tabId) => {
   }
 }
 
+const migrate = (state) => {
+  masterKey = masterKey || getMasterKey()
+  if (!masterKey) {
+    console.log('Could not access master password; aborting')
+    return
+  }
+  const passwords = state.get('passwords')
+  if (passwords.size) {
+    passwords.forEach((password) => {
+      let decrypted = CryptoUtil.decryptVerify(password.get('encryptedPassword'),
+                                               password.get('authTag'),
+                                               masterKey,
+                                               password.get('iv'))
+      let form = {}
+      form['origin'] = password.get('origin')
+      form['signon_realm'] = password.get('origin') + '/'
+      form['action'] = password.get('action')
+      form['username'] = password.get('username')
+      form['password'] = decrypted
+      autofill.addLogin(form)
+    })
+    state = state.set('passwords', new Immutable.List())
+  }
+  const allSiteSettings = state.get('siteSettings')
+  const blackedList = allSiteSettings.filter((setting) => setting.get('savePasswords') === false)
+  if (blackedList.size) {
+    blackedList.forEach((entry, index) => {
+      let form = {}
+      form['origin'] = index
+      form['signon_realm'] = index + '/'
+      form['blacklisted_by_user'] = true
+      autofill.addLogin(form)
+      appActions.deletePasswordSite(index)
+    })
+  }
+  return state
+}
+
 const passwordManagerReducer = (state, action) => {
   action = makeImmutable(action)
   switch (action.get('actionType')) {
     case appConstants.APP_SET_STATE:
       init()
+      state = migrate(state)
       break
     case appConstants.APP_SAVE_PASSWORD:
       savePassword(action.get('username'), action.get('origin'), action.get('tabId'))

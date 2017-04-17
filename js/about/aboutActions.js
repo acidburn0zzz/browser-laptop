@@ -228,14 +228,6 @@ const aboutActions = {
     })
   },
 
-  // deletePasswordSite: function (origin) {
-  //   aboutActions.dispatchAction({
-  //     actionType: appConstants.APP_CHANGE_SITE_SETTING,
-  //     hostPattern: origin,
-  //     key: 'savePasswords'
-  //   })
-  // },
-
   clearPasswords: function () {
     aboutActions.dispatchAction({
       actionType: appConstants.APP_CLEAR_PASSWORDS
