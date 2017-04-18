@@ -396,17 +396,6 @@ const appActions = {
   },
 
   /**
-   * Saves login credentials
-   * @param {Object} passwordDetail - login details
-   */
-  // savePassword: function (passwordDetail) {
-  //   AppDispatcher.dispatch({
-  //     actionType: appConstants.APP_ADD_PASSWORD,
-  //     passwordDetail
-  //   })
-  // },
-
-  /**
    * Deletes login credentials
    * @param {Object} passwordDetail - login details
    */

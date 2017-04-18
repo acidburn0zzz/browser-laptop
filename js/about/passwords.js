@@ -89,21 +89,9 @@ SiteItem.propTypes = {
 class PasswordItem extends React.Component {
   constructor () {
     super()
-    // this.state = {
-    //   decrypted: null
-    // }
     this.onDelete = this.onDelete.bind(this)
     this.onCopy = this.onCopy.bind(this)
-    // this.onDecrypt = this.onDecrypt.bind(this)
   }
-
-  // decrypt () {
-  //   // Ask the main process to decrypt the password
-  //   const password = this.props.password
-  //   aboutActions.decryptPassword(password.get('encryptedPassword'),
-  //                                password.get('authTag'), password.get('iv'),
-  //                                this.props.id)
-  // }
 
   onDelete () {
     aboutActions.deletePassword(this.props.password.toJS())
@@ -111,26 +99,7 @@ class PasswordItem extends React.Component {
 
   onCopy () {
     aboutActions.setClipboard(this.props.password.get('password'))
-    // if (this.state.decrypted !== null) {
-    //   aboutActions.setClipboard(this.state.decrypted)
-    // } else {
-    //   this.decrypt(false)
-    // }
   }
-
-  // onDecrypt (e, details) {
-  //   if (details.id !== this.props.id) {
-  //     return
-  //   }
-  //   aboutActions.setClipboard(details.decrypted)
-  //   this.setState({
-  //     decrypted: details.decrypted
-  //   })
-  // }
-
-  // componentDidMount () {
-  //   ipc.on('decrypted-password', this.onDecrypt)
-  // }
 
   render () {
     const password = this.props.password

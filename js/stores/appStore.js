@@ -407,24 +407,10 @@ const handleAppAction = (action) => {
     case appConstants.APP_NEW_WINDOW:
       createWindow(action)
       break
-    case appConstants.APP_ADD_PASSWORD:
-      // If there is already an entry for this exact origin, action, and
-      // username if it exists, update the password instead of creating a new entry
-      let passwords = appState.get('passwords').filterNot((pw) => {
-        return pw.get('origin') === action.passwordDetail.origin &&
-          pw.get('action') === action.passwordDetail.action &&
-          (!pw.get('username') || pw.get('username') === action.passwordDetail.username)
-      })
-      appState = appState.set('passwords', passwords.push(Immutable.fromJS(action.passwordDetail)))
-      break
     case appConstants.APP_REMOVE_PASSWORD:
-      // appState = appState.set('passwords', appState.get('passwords').filterNot((pw) => {
-      //   return Immutable.is(pw, Immutable.fromJS(action.passwordDetail))
-      // }))
       autofill.removeLogin(action.passwordDetail.toJS())
       break
     case appConstants.APP_CLEAR_PASSWORDS:
-      // appState = appState.set('passwords', new Immutable.List())
       autofill.clearLogins()
       break
     case appConstants.APP_CHANGE_NEW_TAB_DETAIL:

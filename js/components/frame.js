@@ -391,18 +391,6 @@ class Frame extends ImmutableComponent {
       case 'show-findbar':
         windowActions.setFindbarShown(this.frame, true)
         break
-      case 'fill-password':
-        let currentUrl = urlParse(this.tab.get('url'))
-        if (currentUrl &&
-            [currentUrl.protocol, currentUrl.host].join('//') === this.props.activeShortcutDetails.get('origin')) {
-          this.webview.send(messages.GOT_PASSWORD,
-                            this.props.activeShortcutDetails.get('username'),
-                            this.props.activeShortcutDetails.get('password'),
-                            this.props.activeShortcutDetails.get('origin'),
-                            this.props.activeShortcutDetails.get('action'),
-                            true)
-        }
-        break
       case 'focus-webview':
         setImmediate(() => this.webview.focus())
         break

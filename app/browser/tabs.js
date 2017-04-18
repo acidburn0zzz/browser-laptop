@@ -188,9 +188,6 @@ const updateAboutDetails = (tab, tabValue) => {
     defaultSession.autofill.getBlackedlistLogins((result) => {
       tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED, result)
     })
-    // tab.send(messages.PASSWORD_DETAILS_UPDATED, passwords.toJS())
-    // tab.send(messages.PASSWORD_SITE_DETAILS_UPDATED,
-    //     allSiteSettings.filter((setting) => setting.get('savePasswords') === false).toJS())
   } else if (location === 'about:flash') {
     tab.send(messages.BRAVERY_DEFAULTS_UPDATED, braveryDefaults.toJS())
   } else if (location === 'about:newtab') {

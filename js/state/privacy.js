@@ -5,14 +5,16 @@
 const AppDispatcher = require('../dispatcher/appDispatcher')
 const AppStore = require('../stores/appStore')
 const appConstants = require('../constants/appConstants')
+const {passwordManagers} = require('../constants/passwordManagers')
 const settings = require('../constants/settings')
 const {registerUserPrefs} = require('./userPrefs')
 const getSetting = require('../settings').getSetting
 
 const getPrivacySettings = () => {
+  const passwordManagerEnabled = getSetting(settings.ACTIVE_PASSWORD_MANAGER) === passwordManagers.BUILT_IN
   return { 'autofill.enabled': getSetting(settings.AUTOFILL_ENABLED),
-    'profile.password_manager_enabled': true,
-    'credentials_enable_service': true,
+    'profile.password_manager_enabled': passwordManagerEnabled,
+    'credentials_enable_service': passwordManagerEnabled,
     'credentials_enable_autosignin': false
   }
 }

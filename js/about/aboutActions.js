@@ -205,10 +205,6 @@ const aboutActions = {
     })
   },
 
-  decryptPassword: function (encryptedPassword, authTag, iv, id) {
-    ipc.send(messages.DECRYPT_PASSWORD, encryptedPassword, authTag, iv, id)
-  },
-
   setClipboard: function (text) {
     ipc.send(messages.SET_CLIPBOARD, text)
   },
