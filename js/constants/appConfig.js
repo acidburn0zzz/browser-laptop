@@ -19,6 +19,7 @@ module.exports = {
   quitTimeout: 10 * 1000,
   resourceNames: {
     ADBLOCK: 'adblock',
+    AUTOPLAY: 'autoplay',
     SAFE_BROWSING: 'safeBrowsing',
     HTTPS_EVERYWHERE: 'httpsEverywhere',
     TRACKING_PROTECTION: 'trackingProtection',
@@ -31,6 +32,9 @@ module.exports = {
     SITEHACK: 'siteHacks',
     WEBTORRENT: 'webtorrent'
     // ... other optional resource files are identified by uuid such as for regional adblock
+  },
+  autoplay: {
+    enabled: true
   },
   cookieblock: {
     enabled: true

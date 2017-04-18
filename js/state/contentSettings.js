@@ -64,6 +64,10 @@ const getDefaultUserPrefContentSettings = (braveryDefaults, appSettings, appConf
   braveryDefaults = makeImmutable(braveryDefaults)
   return Immutable.fromJS({
     cookies: getDefault3rdPartyStorageSettings(braveryDefaults, appSettings, appConfig),
+    autoplay: [{
+      setting: braveryDefaults.get('autoplay') ? 'allow' : 'block',
+      primaryPattern: '*'
+    }],
     referer: [{
       setting: braveryDefaults.get('cookieControl') !== 'allowAllCookies' ? 'block' : 'allow',
       primaryPattern: '*'
