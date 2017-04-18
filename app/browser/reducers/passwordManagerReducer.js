@@ -171,10 +171,8 @@ const updatePassword = (username, origin, tabId) => {
       webContents.updatePassword()
       return
     }
-    if (buttonIndex === 1) {
-      // never save
-      webContents.noUpdatePassword()
-    }
+    // never save
+    webContents.noUpdatePassword()
   }
 }
 
